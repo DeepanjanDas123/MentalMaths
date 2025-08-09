@@ -192,17 +192,18 @@ export default function TimedMentalMaths() {
 
   // New logic for decimal answers
   if (!isNaN(userNum) && !isNaN(Number(expected))) {
-    const userParts = normalizedUser.split(".");
-    const expectedParts = expected.split(".");
+    // Split at decimal point
+    const [userInt, userFrac = ""] = normalizedUser.split(".");
+    const [expInt, expFrac = ""] = expected.split(".");
 
-    // Compare integer part strictly
-    if (userParts[0] !== expectedParts[0]) {
+    // Integer part must match exactly
+    if (userInt !== expInt) {
       correct = false;
     } else {
-      // Compare decimal part with ±0.1 tolerance
-      const userDec = userParts[1] ? Number("0." + userParts[1]) : 0;
-      const expectedDec = expectedParts[1] ? Number("0." + expectedParts[1]) : 0;
-      correct = Math.abs(userDec - expectedDec) <= 0.1;
+      // Decimal part: allow ±0.1 tolerance
+      const userDec = Number("0." + userFrac.padEnd(1, "0"));
+      const expDec = Number("0." + expFrac.padEnd(1, "0"));
+      correct = Math.abs(userDec - expDec) <= 0.1;
     }
   } else {
     correct = normalizedUser.toLowerCase() === expected.toLowerCase();
