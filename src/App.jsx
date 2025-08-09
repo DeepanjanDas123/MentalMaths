@@ -307,39 +307,63 @@ export default function TimedMentalMaths() {
 
   // render
   if (stage === 'menu') {
-    return (
-      <div className="min-h-screen flex items-center justify-center p-6 bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100">
-        <div className="ui-card animate-fadein">
-          <h1 className="text-4xl font-extrabold mb-6 text-center text-purple-700 drop-shadow">🧠 Timed Mental Maths</h1>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <label className="flex flex-col">
-              <span className="text-base text-gray-700 font-semibold">Time limit (minutes)</span>
-              <input type="number" min="1" value={minutes} onChange={e => setMinutes(e.target.value)} className="border-2 border-purple-200 rounded-xl p-3 mt-2 text-lg focus:ring-2 focus:ring-purple-400 transition" />
-              <span className="text-xs text-gray-500 mt-1">Total questions = minutes × 10</span>
-            </label>
-
-            <label className="flex flex-col">
-              <span className="text-base text-gray-700 font-semibold">Difficulty</span>
-              <select value={difficulty} onChange={e => setDifficulty(e.target.value)} className="border-2 border-purple-200 rounded-xl p-3 mt-2 text-lg focus:ring-2 focus:ring-purple-400 transition">
-                <option>Mixed</option>
-                <option>Easy</option>
-                <option>Medium</option>
-                <option>Hard</option>
-              </select>
-              <span className="text-xs text-gray-500 mt-1">Mixed will randomize Easy/Medium/Hard per session</span>
-            </label>
-          </div>
-
-          <div className="mt-8 flex gap-4 justify-center">
-            <button onClick={startTest} className="px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-500 text-white rounded-xl text-lg font-bold shadow-lg hover:scale-105 transition">Start Test</button>
-            <button onClick={() => { setMinutes(8); setDifficulty('Mixed'); }} className="px-6 py-3 bg-gray-200 rounded-xl text-lg font-semibold hover:bg-gray-300 transition">Reset</button>
-          </div>
-
-          <div className="mt-8 text-sm text-gray-600 text-center">Questions are unique within a session. When time expires or you finish all questions, analytics will appear automatically.</div>
+  return (
+    <div className="min-h-screen flex items-center justify-center">
+      <div className="ui-card animate-fadein" style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '3vw'}}>
+        <h1 className="text-4xl font-extrabold mb-8 text-center text-purple-700 drop-shadow" style={{letterSpacing: '0.04em'}}>🧠 Timed Mental Maths</h1>
+        <div style={{width: '100%', maxWidth: 600, display: 'flex', flexDirection: 'column', gap: '2vw'}}>
+          <label style={{fontSize: '1.5rem', fontWeight: 600, marginBottom: 12, color: '#eebbc3'}}>
+            Time limit (minutes)
+            <input
+              type="number"
+              min="1"
+              value={minutes}
+              onChange={e => setMinutes(e.target.value)}
+              className="answer-input"
+              style={{marginTop: 12, width: '100%'}}
+            />
+            <span style={{fontSize: '1rem', color: '#b8b8d1', marginTop: 6, display: 'block'}}>Total questions = minutes × 10</span>
+          </label>
+          <label style={{fontSize: '1.5rem', fontWeight: 600, marginBottom: 12, color: '#eebbc3'}}>
+            Difficulty
+            <select
+              value={difficulty}
+              onChange={e => setDifficulty(e.target.value)}
+              className="answer-input"
+              style={{marginTop: 12, width: '100%'}}
+            >
+              <option>Mixed</option>
+              <option>Easy</option>
+              <option>Medium</option>
+              <option>Hard</option>
+            </select>
+            <span style={{fontSize: '1rem', color: '#b8b8d1', marginTop: 6, display: 'block'}}>Mixed will randomize Easy/Medium/Hard per session</span>
+          </label>
+        </div>
+        <div style={{display: 'flex', gap: '2vw', marginTop: 24}}>
+          <button
+            onClick={startTest}
+            className="bg-green-600 text-white font-bold"
+            style={{fontSize: '2rem', padding: '1em 2.5em'}}
+          >
+            Start Test
+          </button>
+          <button
+            onClick={() => { setMinutes(8); setDifficulty('Mixed'); }}
+            className="bg-gray-200 font-semibold"
+            style={{fontSize: '2rem', padding: '1em 2.5em'}}
+          >
+            Reset
+          </button>
+        </div>
+        <div style={{marginTop: 32, fontSize: '1.2rem', color: '#b8b8d1', textAlign: 'center', maxWidth: 600}}>
+          Questions are unique within a session.<br />
+          When time expires or you finish all questions, analytics will appear automatically.
         </div>
       </div>
-    );
-  }
+    </div>
+  );
+}
 
   if (stage === 'test') {
     const total = questions.length;
