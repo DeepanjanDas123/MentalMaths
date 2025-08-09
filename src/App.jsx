@@ -39,7 +39,7 @@ function genPercent(difficulty) {
   const baseMax = difficulty === "Easy" ? 100 : difficulty === "Medium" ? 500 : 2000;
   const base = randInt(10, baseMax);
   const perc = choose([5, 10, 12, 15, 20, 25, 33, 40, 50]);
-  const ans = Math.round((base * perc) / 100);
+  const ans = (base * perc) / 100;
   return { prompt: `${perc}% of ${base}`, answer: ans.toString() };
 }
 function genApproxDivision(difficulty) {
