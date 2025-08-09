@@ -33,8 +33,8 @@ Sharpen your brain, race against the clock, and unlock your inner mathlete with 
 
 1. **Clone this repo:**
    ```sh
-   git clone https://github.com/yourusername/mental-maths.git
-   cd mental-maths/app
+   git clone https://github.com/DeepanjanDas123/MentalMaths.git
+   cd MentalMaths/app
    ```
 
 2. **Install dependencies:**
