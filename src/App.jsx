@@ -176,53 +176,64 @@ export default function TimedMentalMaths() {
   }
 
   function submitCurrent() {
-    if (!running) return;
-    const idx = currentIndex;
-    const q = questionsRef.current[idx];
-    const now = Date.now();
-    const elapsed = (now - startTsRef.current) / 1000;
+  if (!running) return;
+  const idx = currentIndex;
+  const q = questionsRef.current[idx];
+  const now = Date.now();
+  const elapsed = (now - startTsRef.current) / 1000;
 
-    const updatedTimes = perQuestionTimeRef.current.slice();
-    updatedTimes[idx] = Number((updatedTimes[idx] + elapsed).toFixed(2));
+  const updatedTimes = perQuestionTimeRef.current.slice();
+  updatedTimes[idx] = Number((updatedTimes[idx] + elapsed).toFixed(2));
 
-    const normalizedUser = (userAnswer || '').toString().trim();
-    const userNum = Number(normalizedUser);
-    const expected = q.answer.toString().trim();
-    let correct = false;
+  const normalizedUser = (userAnswer || '').toString().trim();
+  const userNum = Number(normalizedUser);
+  const expected = q.answer.toString().trim();
+  let correct = false;
 
-    if (!isNaN(userNum) && !isNaN(Number(expected))) {
-      const diff = Math.abs(userNum - Number(expected));
-      correct = diff <= Math.max(0.05 * Math.abs(Number(expected)), 1e-9);
+  // New logic for decimal answers
+  if (!isNaN(userNum) && !isNaN(Number(expected))) {
+    const userParts = normalizedUser.split(".");
+    const expectedParts = expected.split(".");
+
+    // Compare integer part strictly
+    if (userParts[0] !== expectedParts[0]) {
+      correct = false;
     } else {
-      correct = normalizedUser.toLowerCase() === expected.toLowerCase();
+      // Compare decimal part with ±0.1 tolerance
+      const userDec = userParts[1] ? Number("0." + userParts[1]) : 0;
+      const expectedDec = expectedParts[1] ? Number("0." + expectedParts[1]) : 0;
+      correct = Math.abs(userDec - expectedDec) <= 0.1;
     }
-
-    const updatedResults = resultsRef.current.slice();
-    updatedResults[idx] = {
-      prompt: q.prompt,
-      expected: expected,
-      answer: normalizedUser,
-      correct,
-      time: updatedTimes[idx]
-    };
-
-    // commit to state and refs
-    setPerQuestionTime(updatedTimes);
-    perQuestionTimeRef.current = updatedTimes;
-
-    setResults(updatedResults);
-    resultsRef.current = updatedResults;
-
-    setUserAnswer('');
-    startTsRef.current = Date.now();
-
-    const next = idx + 1;
-    if (next >= questionsRef.current.length) {
-      finishTest(updatedResults);
-      return;
-    }
-    setCurrentIndex(next);
+  } else {
+    correct = normalizedUser.toLowerCase() === expected.toLowerCase();
   }
+
+  const updatedResults = resultsRef.current.slice();
+  updatedResults[idx] = {
+    prompt: q.prompt,
+    expected: expected,
+    answer: normalizedUser,
+    correct,
+    time: updatedTimes[idx]
+  };
+
+  // commit to state and refs
+  setPerQuestionTime(updatedTimes);
+  perQuestionTimeRef.current = updatedTimes;
+
+  setResults(updatedResults);
+  resultsRef.current = updatedResults;
+
+  setUserAnswer('');
+  startTsRef.current = Date.now();
+
+  const next = idx + 1;
+  if (next >= questionsRef.current.length) {
+    finishTest(updatedResults);
+    return;
+  }
+  setCurrentIndex(next);
+}
 
   function skipCurrent() {
     if (!running) return;
