@@ -44,9 +44,9 @@ Sharpen your brain, race against the clock, and unlock your inner mathlete with 
 
 3. **Run locally:**
    ```sh
-   npm start
+   npm run dev
    ```
-   Then open [http://localhost:3000](http://localhost:3000) in your browser.
+   Then open [http://localhost:5173](http://localhost:5173) in your browser.
 
 4. **Or just play online:**  
    [https://mental-maths-ten.vercel.app](https://mental-maths-ten.vercel.app)
