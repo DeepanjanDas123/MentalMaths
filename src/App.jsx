@@ -440,7 +440,7 @@ export default function TimedMentalMaths() {
     const wrongCount = results.filter(r => r && !r.correct && r.answer !== '').length;
     const skipped = total - results.filter(r => r && r.answer !== '').length;
     const accuracy = total ? ((correctCount / total) * 100).toFixed(1) : '0.0';
-    const avgTime = total ? (results.reduce((s, r) => s + (r ? r.time : 0), 0) / (total - skipped).toFixed(2) : '0.00';
+    const avgTime = total ? (results.reduce((s, r) => s + (r ? r.time : 0), 0) / (total - skipped).toFixed(2)) : '0.00';
 
     return (
       <div className="min-h-screen flex items-center justify-center p-6 bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100">
